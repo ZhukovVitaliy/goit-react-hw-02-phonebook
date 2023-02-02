@@ -9,6 +9,22 @@ export class ContactsEditor extends Component {
     name: '',
     number: '',
   };
+  //this.props.onSubmit
+
+  handelSubmit = e => {
+    e.preventDefault();
+
+    const { name, number } = this.state;
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    this.props.onSubmit(newContact);
+
+    this.setState({ name: '', number: '' });
+  };
 
   handelChange = e => {
     const { name, value } = e.currentTarget;
