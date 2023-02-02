@@ -1,7 +1,9 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import { GlobalStyle } from '../../GlobalStyle';
 import { ContactsEditor } from 'components/ContactsEditor/ContactsEditor';
+import { ContactsList } from 'components/ContactsList/ContactsList';
+import { Filter } from 'components/Filter/Filter';
 
 export class App extends Component {
   state = {
@@ -14,31 +16,28 @@ export class App extends Component {
     filter: '',
   };
 
-  handelSubmit = e => {
-    e.preventDefault();
-
-    const { name, number } = this.state;
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-
-    this.setState(({ contacts }) => ({
-      contacts: [newContact, ...contacts],
-      name: '',
-      number: '',
-    }));
-  };
-
   addContact = contact => {
     this.setState(({ contacts }) => ({
       contacts: [contact, ...contacts],
     }));
   };
 
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
+  getVisibleContacts = () => {
+    const normolizedFilter = this.state.filter.toLowerCase();
+
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normolizedFilter)
+    );
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+    console.log(this.getVisibleContacts());
+    const visibleContacts = this.getVisibleContacts();
 
     return (
       <>
@@ -47,17 +46,9 @@ export class App extends Component {
         <ContactsEditor onSubmit={this.addContact} />
 
         <h2>Contacts</h2>
-        <ul>
-          {contacts.map(({ id, name, number }) => {
-            return (
-              <li key={id}>
-                {name}: {number} <button>Delete</button>
-              </li>
-            );
-          })}
-        </ul>
-        {/* <LoginForm /> */}
-        {/* <ProductReviewForm /> */}
+        <Filter value={filter} onChange={this.changeFilter} />
+
+        <ContactsList contacts={visibleContacts} />
       </>
     );
   }
