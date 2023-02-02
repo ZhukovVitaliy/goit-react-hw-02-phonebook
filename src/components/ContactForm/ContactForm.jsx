@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 const nameInputId = nanoid();
 const numberInputId = nanoid();
 
-export class ContactsEditor extends Component {
+export class ContactForm extends Component {
   state = {
     name: '',
     number: '',

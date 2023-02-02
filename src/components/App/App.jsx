@@ -1,7 +1,7 @@
 import { Component } from 'react';
 // import { nanoid } from 'nanoid';
 import { GlobalStyle } from '../../GlobalStyle';
-import { ContactsEditor } from 'components/ContactsEditor/ContactsEditor';
+import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactsList } from 'components/ContactsList/ContactsList';
 import { Filter } from 'components/Filter/Filter';
 
@@ -16,10 +16,21 @@ export class App extends Component {
     filter: '',
   };
 
-  addContact = contact => {
-    this.setState(({ contacts }) => ({
-      contacts: [contact, ...contacts],
-    }));
+  addContact = newContact => {
+    const { contacts } = this.state;
+    const isOnList = contacts.find(({ name }) =>
+      name.toLowerCase().includes(newContact.name.toLowerCase())
+    );
+
+    if (isOnList) {
+      return alert(`${newContact.name} is aldeady in contacts`);
+    }
+
+    this.setState(({ contacts }) => {
+      return {
+        contacts: [newContact, ...contacts],
+      };
+    });
   };
 
   changeFilter = e => {
@@ -34,21 +45,28 @@ export class App extends Component {
     );
   };
 
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const { filter } = this.state;
-    console.log(this.getVisibleContacts());
     const visibleContacts = this.getVisibleContacts();
 
     return (
       <>
         <GlobalStyle />
-        <h2>Phonebook</h2>
-        <ContactsEditor onSubmit={this.addContact} />
+        <h1>Phonebook</h1>
+        <ContactForm onSubmit={this.addContact} />
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
-
-        <ContactsList contacts={visibleContacts} />
+        <ContactsList
+          onDeleteContact={this.deleteContact}
+          contacts={visibleContacts}
+        />
       </>
     );
   }
