@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { Input } from './ContactForm.styled';
 
 const nameInputId = nanoid();
 const numberInputId = nanoid();
@@ -39,7 +40,8 @@ export class ContactForm extends Component {
       <form autoComplete="off" onSubmit={this.handelSubmit} action="">
         <label htmlFor={nameInputId}>
           Name
-          <input
+          <br />
+          <Input
             id={nameInputId}
             onChange={this.handelChange}
             type="text"
@@ -53,7 +55,8 @@ export class ContactForm extends Component {
         <br />
         <label htmlFor={numberInputId}>
           Number
-          <input
+          <br />
+          <Input
             id={numberInputId}
             onChange={this.handelChange}
             type="tel"

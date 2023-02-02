@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { GlobalStyle } from '../../GlobalStyle';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactsList } from 'components/ContactsList/ContactsList';
+import { Container } from './App.styled';
 import { Filter } from 'components/Filter/Filter';
 
 export class App extends Component {
@@ -59,7 +60,9 @@ export class App extends Component {
       <>
         <GlobalStyle />
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.addContact} />
+        <Container>
+          <ContactForm onSubmit={this.addContact} />
+        </Container>
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
